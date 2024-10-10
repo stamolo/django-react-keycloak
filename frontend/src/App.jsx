@@ -2,6 +2,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./components/Home";
 import Resources from "./components/Resources";
+import UserInfo from "./components/UserInfo"; // Импортируем новый компонент
+
 export default function App() {
   return (
     <div className="container vh-100">
@@ -11,6 +13,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/resource" element={<Resources />} />
+            <Route path="/user-info" element={<UserInfo />} /> {/* Новый маршрут */}
           </Routes>
         </div>
       </BrowserRouter>
