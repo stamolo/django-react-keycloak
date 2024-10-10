@@ -7,7 +7,7 @@ export default function Navbar() {
 
   return (
     <div className="d-flex justify-content-between">
-      <h1 className="">KeyCloak App</h1>
+      <h1 className="">ПланФакт</h1>
       <ul className="nav">
         <Link to="/" className="nav-link">
           Home
@@ -25,7 +25,10 @@ export default function Navbar() {
             </Link>
             <Link to="/user-info" className="nav-link">
               User Info
-            </Link> {/* Новая ссылка */}
+            </Link>
+            <Link to="/profile" className="nav-link">
+              My Profile
+            </Link> {/* Ссылка на личный кабинет */}
           </>
         )}
       </ul>

@@ -2,7 +2,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./components/Home";
 import Resources from "./components/Resources";
-import UserInfo from "./components/UserInfo"; // Импортируем новый компонент
+import UserInfo from "./components/UserInfo"; // Импортируем компонент для информации о пользователе
+import UserProfile from "./components/UserProfile"; // Импортируем новый компонент для профиля пользователя
 
 export default function App() {
   return (
@@ -13,7 +14,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/resource" element={<Resources />} />
-            <Route path="/user-info" element={<UserInfo />} /> {/* Новый маршрут */}
+            <Route path="/user-info" element={<UserInfo />} /> {/* Информация о пользователе */}
+            <Route path="/profile" element={<UserProfile />} /> {/* Личный кабинет */}
           </Routes>
         </div>
       </BrowserRouter>
