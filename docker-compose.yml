@@ -3,6 +3,19 @@ networks:
     driver: bridge
 
 services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: drk_db
+      POSTGRES_USER: drk_user
+      POSTGRES_PASSWORD: drk_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - test_network
+    ports:
+      - "5432:5432"
+
   api:
     build: ./backend
     ports:
@@ -12,6 +25,12 @@ services:
     command: bash -c "poetry run python manage.py runserver 0.0.0.0:8000"
     networks:
       - test_network
+    environment:
+      POSTGRES_DB: drk_db
+      POSTGRES_USER: drk_user
+      POSTGRES_PASSWORD: drk_password
+      POSTGRES_HOST: db
+
   web:
     build: ./frontend
     ports:
@@ -25,6 +44,7 @@ services:
     environment:
       API_URL: host.docker.internal:8000
       KEYCLOAK_URL: host.docker.internal:8080
+
   keycloak:
     image: quay.io/keycloak/keycloak:21.1.1
     ports:
@@ -36,3 +56,6 @@ services:
       - KEYCLOAK_ADMIN_PASSWORD=admin
     networks:
       - test_network
+
+volumes:
+  postgres_data:

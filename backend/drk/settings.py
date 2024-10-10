@@ -78,9 +78,13 @@ WSGI_APPLICATION = "drk.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'drk_db',  # Название базы данных
+        'USER': 'drk_user',  # Имя пользователя базы данных
+        'PASSWORD': 'drk_password',  # Пароль пользователя
+        'HOST': 'db',  # Имя сервиса базы данных в Docker
+        'PORT': '5432',  # Порт PostgreSQL
     }
 }
 
