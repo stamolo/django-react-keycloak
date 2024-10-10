@@ -28,7 +28,11 @@ export default function Navbar() {
             </Link>
             <Link to="/profile" className="nav-link">
               My Profile
-            </Link> {/* Ссылка на личный кабинет */}
+            </Link>
+            {/* Добавляем ссылку на управление компаниями */}
+            <Link to="/companies" className="nav-link">
+              Manage Companies
+            </Link>
           </>
         )}
       </ul>
