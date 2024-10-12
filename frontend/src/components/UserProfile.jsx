@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AuthenticationService from "../AuthenticationService.jsx";
+import Grid from './Grid'; // Импортируем Grid
 
 export default function UserProfile() {
   const [profile, setProfile] = useState({});
@@ -7,8 +8,6 @@ export default function UserProfile() {
   const BACKEND_API_URL = "http://localhost:8000/user-profile/";
   const FIELDS_API_URL = "http://localhost:8000/user-profile/fields/";
 
-
-  // Получение метаданных о полях
   useEffect(() => {
     fetch(FIELDS_API_URL, {
       headers: { Authorization: `Bearer ${AuthenticationService.getToken()}` },
@@ -22,7 +21,6 @@ export default function UserProfile() {
       });
   }, []);
 
-  // Получение данных о профиле
   useEffect(() => {
     fetch(BACKEND_API_URL, {
       headers: { Authorization: `Bearer ${AuthenticationService.getToken()}` },
@@ -36,9 +34,9 @@ export default function UserProfile() {
       });
   }, []);
 
-  // Обработчик изменения полей формы
-  const handleChange = (e) => {
-    setProfile({ ...profile, [e.target.name]: e.target.value });
+  // Обработчик изменения полей таблицы
+  const handleProfileChange = (field, value) => {
+    setProfile({ ...profile, [field]: value });
   };
 
   // Обработчик отправки данных на сервер
@@ -61,22 +59,18 @@ export default function UserProfile() {
       });
   };
 
+  const columns = fields.map(field => field.name);  // Создание колонок на основе полей
+  const data = [profile];  // Оборачиваем профиль в массив для таблицы
+
   return (
     <div className="container mt-5">
       <h2>User Profile</h2>
       <form onSubmit={handleSubmit}>
-        {fields.map((field) => (
-          <div key={field.name} className="form-group">
-            <label>{field.name}</label>
-            <input
-              type={field.type === "CharField" ? "text" : "text"} // Простая проверка типа
-              name={field.name}
-              className="form-control"
-              value={profile[field.name] || ""}
-              onChange={handleChange}
-            />
-          </div>
-        ))}
+        <Grid
+          columns={columns}
+          data={data}
+          onCellChange={handleProfileChange} // Обработчик изменений в таблице
+        />
         <button type="submit" className="btn btn-primary mt-3">
           Save Changes
         </button>
