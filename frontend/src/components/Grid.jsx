@@ -1,19 +1,17 @@
 import React from 'react';
 import HeaderRow from './HeaderRow';
-import DataRow from './DataRow';
+import VirtualizedRows from './VirtualizedRows'; // Импортируем компонент виртуализированных строк
 
 const Grid = ({ columns, data }) => {
   return (
-    <table className="data-grid">
-      <thead>
-        <HeaderRow columns={columns} />
-      </thead>
-      <tbody>
-        {data.map((row, index) => (
-          <DataRow key={index} row={row} columns={columns} />
-        ))}
-      </tbody>
-    </table>
+    <div className="grid-container" style={{ height: '400px', overflowY: 'auto' }}>
+      <table className="data-grid">
+        <thead>
+          <HeaderRow columns={columns} />
+        </thead>
+        <VirtualizedRows columns={columns} data={data} rowHeight={50} containerHeight={400} />
+      </table>
+    </div>
   );
 };
 
