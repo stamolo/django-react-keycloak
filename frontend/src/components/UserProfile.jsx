@@ -34,46 +34,18 @@ export default function UserProfile() {
       });
   }, []);
 
-  // Обработчик изменения полей таблицы
-  const handleProfileChange = (field, value) => {
-    setProfile({ ...profile, [field]: value });
-  };
-
-  // Обработчик отправки данных на сервер
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    fetch(BACKEND_API_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${AuthenticationService.getToken()}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(profile),
-    })
-      .then((response) => response.json())
-      .then(() => {
-        alert("Profile updated successfully!");
-      })
-      .catch((error) => {
-        console.error("Error updating profile:", error);
-      });
-  };
-
   const columns = fields.map(field => field.name);  // Создание колонок на основе полей
   const data = [profile];  // Оборачиваем профиль в массив для таблицы
 
   return (
     <div className="container mt-5">
       <h2>User Profile</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <Grid
           columns={columns}
           data={data}
-          onCellChange={handleProfileChange} // Обработчик изменений в таблице
+          onCellChange={() => {}} // Здесь можно добавить логику изменения данных
         />
-        <button type="submit" className="btn btn-primary mt-3">
-          Save Changes
-        </button>
       </form>
     </div>
   );
