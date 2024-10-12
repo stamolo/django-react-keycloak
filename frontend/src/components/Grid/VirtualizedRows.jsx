@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import DataRow from './DataRow';
+import DataRow from './DataRow.jsx';
 
 const VirtualizedRows = ({ columns, data, rowHeight, containerHeight }) => {
   const [visibleRows, setVisibleRows] = useState({ start: 0, end: 10 });

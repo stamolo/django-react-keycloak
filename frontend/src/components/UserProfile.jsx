@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AuthenticationService from "../AuthenticationService.jsx";
-import Grid from './Grid'; // Импортируем Grid
+import Grid from './Grid/Grid.jsx'; // Импортируем Grid
 
 export default function UserProfile() {
   const [profile, setProfile] = useState({});

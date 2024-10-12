@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import HeaderRow from './HeaderRow';
-import PaginationControls from './PaginationControls';
-import EditableCell from './EditableCell';  // Импортируем компонент редактирования
+import HeaderRow from './HeaderRow.jsx';
+import PaginationControls from './PaginationControls.jsx';
+import EditableCell from './EditableCell.jsx';  // Импортируем компонент редактирования
 import './tableStyle.css';  // Подключаем стили для таблицы в Grid
 
 const Grid = ({ columns, data, rowsPerPage, onCellChange }) => {
