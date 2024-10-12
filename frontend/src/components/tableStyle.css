@@ -1,0 +1,62 @@
+/* Стили для таблицы */
+table.data-grid {
+  width: 100%;
+  border-collapse: collapse; /* Убираем двойные границы */
+  margin-top: 20px;
+}
+
+/* Стили для строк таблицы */
+.data-grid tr {
+  border-bottom: 1px solid #ccc;
+}
+
+/* Стили для заголовков таблицы */
+.data-grid th {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+/* Стили для ячеек таблицы */
+.data-grid td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* Стили для ячейки при редактировании */
+.data-grid td input {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #999;
+  box-sizing: border-box; /* Учитываем padding в ширину */
+}
+
+/* Hover эффект для строк */
+.data-grid tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Стили для PaginationControls */
+.pagination-controls {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.pagination-controls button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: 1px solid #007bff;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.pagination-controls button:disabled {
+  background-color: #ddd;
+  border-color: #ddd;
+  cursor: not-allowed;
+}

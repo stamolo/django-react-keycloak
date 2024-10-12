@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import HeaderRow from './HeaderRow';
 import PaginationControls from './PaginationControls';
 import EditableCell from './EditableCell';  // Импортируем компонент редактирования
+import './tableStyle.css';  // Подключаем стили для таблицы в Grid
 
 const Grid = ({ columns, data, rowsPerPage, onCellChange }) => {
   const [currentPage, setCurrentPage] = useState(1);
