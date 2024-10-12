@@ -1,59 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import HeaderRow from './HeaderRow';
-import VirtualizedRows from './VirtualizedRows';
 import PaginationControls from './PaginationControls';
+import EditableCell from './EditableCell';  // Импортируем компонент редактирования
 
-const Grid = ({ columns, data, rowsPerPage }) => {
+const Grid = ({ columns, data, rowsPerPage, onCellChange }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-  const [filterConfig, setFilterConfig] = useState({});
-  const [filteredData, setFilteredData] = useState(data);
-
-  // Фильтрация данных
-  useEffect(() => {
-    let filtered = data;
-
-    // Применяем фильтрацию по всем колонкам
-    Object.keys(filterConfig).forEach((column) => {
-      if (filterConfig[column]) {
-        filtered = filtered.filter((row) =>
-          row[column].toString().toLowerCase().includes(filterConfig[column])
-        );
-      }
-    });
-
-    setFilteredData(filtered);
-  }, [filterConfig, data]);
-
-  // Сортировка данных
-  const sortedData = [...filteredData].sort((a, b) => {
-    if (!sortConfig.key) return 0;
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? -1 : 1;
-    }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? 1 : -1;
-    }
-    return 0;
-  });
 
   // Общее количество страниц
-  const totalPages = Math.ceil(sortedData.length / rowsPerPage);
+  const totalPages = Math.ceil(data.length / rowsPerPage);
 
   // Рассчитываем индексы начала и конца для текущей страницы
   const startRow = (currentPage - 1) * rowsPerPage;
-  const endRow = Math.min(startRow + rowsPerPage, sortedData.length);
+  const endRow = Math.min(startRow + rowsPerPage, data.length);
 
   // Данные для отображения на текущей странице
-  const currentData = sortedData.slice(startRow, endRow);
+  const currentData = data.slice(startRow, endRow);
+
+  console.log("Current page data in Grid:", currentData);  // Отладка данных текущей страницы
 
   return (
     <div className="grid-container" style={{ height: '400px', overflowY: 'auto' }}>
       <table className="data-grid">
         <thead>
-          <HeaderRow columns={columns} onSort={setSortConfig} />
+          <HeaderRow columns={columns} />
         </thead>
-        <VirtualizedRows columns={columns} data={currentData} rowHeight={50} containerHeight={400} />
+        <tbody>
+          {currentData.length > 0 ? currentData.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {columns.map((column) => (
+                <EditableCell
+                  key={column}
+                  field={column}
+                  value={row[column] || ''}  // Если значение undefined, отображаем пустую строку
+                  onCellChange={(field, value) => onCellChange(rowIndex + startRow, field, value)}
+                />
+              ))}
+            </tr>
+          )) : (
+            <tr>
+              <td colSpan={columns.length}>No data available</td>
+            </tr>
+          )}
+        </tbody>
       </table>
       <PaginationControls
         currentPage={currentPage}
