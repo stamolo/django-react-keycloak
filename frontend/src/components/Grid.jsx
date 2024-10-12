@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import HeaderRow from './HeaderRow';
 import VirtualizedRows from './VirtualizedRows';
+import PaginationControls from './PaginationControls';
 
-const Grid = ({ columns, data }) => {
+const Grid = ({ columns, data, rowsPerPage }) => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [filterConfig, setFilterConfig] = useState({});
   const [filteredData, setFilteredData] = useState(data);
 
   // Фильтрация данных
-  const handleFilter = (column, value) => {
-    setFilterConfig({
-      ...filterConfig,
-      [column]: value.toLowerCase(),
-    });
-  };
-
   useEffect(() => {
     let filtered = data;
 
@@ -30,15 +25,6 @@ const Grid = ({ columns, data }) => {
     setFilteredData(filtered);
   }, [filterConfig, data]);
 
-  // Функция для сортировки данных
-  const handleSort = (column) => {
-    let direction = 'asc';
-    if (sortConfig.key === column && sortConfig.direction === 'asc') {
-      direction = 'desc';
-    }
-    setSortConfig({ key: column, direction });
-  };
-
   // Сортировка данных
   const sortedData = [...filteredData].sort((a, b) => {
     if (!sortConfig.key) return 0;
@@ -51,24 +37,29 @@ const Grid = ({ columns, data }) => {
     return 0;
   });
 
+  // Общее количество страниц
+  const totalPages = Math.ceil(sortedData.length / rowsPerPage);
+
+  // Рассчитываем индексы начала и конца для текущей страницы
+  const startRow = (currentPage - 1) * rowsPerPage;
+  const endRow = Math.min(startRow + rowsPerPage, sortedData.length);
+
+  // Данные для отображения на текущей странице
+  const currentData = sortedData.slice(startRow, endRow);
+
   return (
     <div className="grid-container" style={{ height: '400px', overflowY: 'auto' }}>
       <table className="data-grid">
         <thead>
-          <HeaderRow columns={columns} onSort={handleSort} />
+          <HeaderRow columns={columns} onSort={setSortConfig} />
         </thead>
-        <VirtualizedRows columns={columns} data={sortedData} rowHeight={50} containerHeight={400} />
+        <VirtualizedRows columns={columns} data={currentData} rowHeight={50} containerHeight={400} />
       </table>
-      {/* Фильтрация */}
-      {columns.map((column) => (
-        <div key={column}>
-          <input
-            type="text"
-            placeholder={`Filter by ${column}`}
-            onChange={(e) => handleFilter(column, e.target.value)}
-          />
-        </div>
-      ))}
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

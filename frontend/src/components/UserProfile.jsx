@@ -44,7 +44,8 @@ export default function UserProfile() {
         <Grid
           columns={columns}
           data={data}
-          onCellChange={() => {}} // Здесь можно добавить логику изменения данных
+          rowsPerPage={5} // Устанавливаем количество строк на страницу
+          onCellChange={() => {}} // Обработчик изменений в таблице
         />
       </form>
     </div>
