@@ -6,12 +6,18 @@ import UserInfo from "./components/UserInfo";
 import UserProfile from "./components/UserProfile";
 import CompanyForm from "./components/CompanyForm";  // Импортируем компонент для компании
 
+// Подключаем стили
+import './styles/global.css';   // Глобальные стили для всего приложения
+import './styles/navbar.css';   // Стили для навигационного меню
+import './styles/table.css';    // Стили для таблиц
+import './styles/forms.css';    // Стили для форм
+
 export default function App() {
   return (
-    <div className="container vh-100">
+    <div className="container-fluid vh-100"> {/* Используем Bootstrap контейнер */}
       <BrowserRouter>
         <Navbar />
-        <div className="d-flex h-75 align-items-center justify-content-center">
+        <div className="container mt-5"> {/* Внутренний контейнер для страниц */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/resource" element={<Resources />} />

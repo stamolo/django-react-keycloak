@@ -1,8 +1,10 @@
-#UserProfile/urls.py
+from rest_framework.routers import DefaultRouter
 from django.urls import path
-from .views import *
+from .views import UserProfileViewSet, UserProfileMetadataViewSet
 
-urlpatterns = [
-    path('', UserProfileViewSet.as_view({'get': 'list', 'post': 'update'})),  # Для работы с профилем
+router = DefaultRouter()
+router.register(r'profiles', UserProfileViewSet)
+
+urlpatterns = router.urls + [
     path('fields/', UserProfileMetadataViewSet.as_view({'get': 'list'})),  # Для получения метаданных модели
 ]

@@ -6,36 +6,23 @@ export default function Navbar() {
   const logoutUrl = AuthenticationService.getLogoutUrl();
 
   return (
-    <div className="d-flex justify-content-between">
-      <h1 className="">ПланФакт</h1>
-      <ul className="nav">
-        <Link to="/" className="nav-link">
-          Home
-        </Link>
-        <Link to={loginUrl} className="nav-link">
-          Login
-        </Link>
-        <Link to={logoutUrl} className="nav-link">
-          Logout
-        </Link>
+    <nav className="navbar">
+      <div className="navbar-logo">
+        <h1>ПланФакт</h1>
+      </div>
+      <div className="navbar-links">
+        <Link to="/" className="nav-link">Home</Link>
+        <Link to={loginUrl} className="nav-link">Login</Link>
+        <Link to={logoutUrl} className="nav-link">Logout</Link>
         {AuthenticationService.isLoggedIn() && (
           <>
-            <Link to="/resource" className="nav-link">
-              Protected Resource
-            </Link>
-            <Link to="/user-info" className="nav-link">
-              User Info
-            </Link>
-            <Link to="/profile" className="nav-link">
-              My Profile
-            </Link>
-            {/* Добавляем ссылку на управление компаниями */}
-            <Link to="/companies" className="nav-link">
-              Manage Companies
-            </Link>
+            <Link to="/resource" className="nav-link">Protected Resource</Link>
+            <Link to="/user-info" className="nav-link">User Info</Link>
+            <Link to="/profile" className="nav-link">My Profile</Link>
+            <Link to="/companies" className="nav-link">Manage Companies</Link>
           </>
         )}
-      </ul>
-    </div>
+      </div>
+    </nav>
   );
 }

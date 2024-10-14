@@ -1,0 +1,56 @@
+/* global.css */
+
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #f4f4f4;
+  --text-color: #333;
+  --font-size-base: 16px;
+  --padding-base: 10px;
+  --heading-size: 22px;
+  --heading-margin: 30px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: var(--font-size-base);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  background-color: #fafafa;
+}
+
+h1, h2, h3 {
+  color: var(--primary-color);
+  font-size: var(--heading-size);
+  margin-top: var(--heading-margin);
+  margin-bottom: var(--heading-margin);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--padding-base);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%; /* Подстраиваем ширину контейнера */
+    padding: 5px;
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .data-grid th, .data-grid td {
+    font-size: 14px; /* Уменьшаем размер шрифта для маленьких экранов */
+  }
+
+  h1, h2, h3 {
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}

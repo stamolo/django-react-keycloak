@@ -1,0 +1,37 @@
+/* Global layout */
+.layout-container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  grid-template-areas:
+    "header"
+    "content"
+    "footer";
+}
+
+.header {
+  grid-area: header;
+  background-color: var(--primary-color);
+  padding: 1rem;
+}
+
+.content {
+  grid-area: content;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer {
+  grid-area: footer;
+  background-color: #f8f9fa;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .content {
+    padding: 1rem;
+  }
+}
