@@ -16,6 +16,19 @@ services:
     ports:
       - "5432:5432"
 
+  keycloak_db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: keycloak_db
+      POSTGRES_USER: keycloak_user
+      POSTGRES_PASSWORD: keycloak_password
+    volumes:
+      - keycloak_data:/var/lib/postgresql/data
+    networks:
+      - test_network
+    ports:
+      - "5433:5432"
+
   api:
     build: ./backend
     ports:
@@ -54,8 +67,14 @@ services:
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
+      - DB_VENDOR=postgres
+      - DB_ADDR=keycloak_db
+      - DB_DATABASE=keycloak_db
+      - DB_USER=keycloak_user
+      - DB_PASSWORD=keycloak_password
     networks:
       - test_network
 
 volumes:
   postgres_data:
+  keycloak_data:
