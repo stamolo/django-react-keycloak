@@ -4,4 +4,5 @@ from .models import UserProfile
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['keycloak_id', 'work_place', 'position']
+        # Автоматически используем все поля модели, кроме keycloak_id
+        exclude = ['keycloak_id']

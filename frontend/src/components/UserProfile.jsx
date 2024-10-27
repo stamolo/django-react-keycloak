@@ -68,11 +68,9 @@ export default function UserProfile() {
     e.preventDefault();
     console.log("Submitting profile data:", profile);
 
-    // Формируем URL для обновления с использованием keycloak_id
-    const updateUrl = `http://localhost:8000/user-profile/${profile.keycloak_id}/`;
-
-    fetch(updateUrl, {
-      method: "PATCH",  // Используем PUT для обновления данных
+    // Отправляем данные без keycloak_id
+    fetch(BACKEND_API_URL, {
+      method: "PATCH",
       headers: {
         Authorization: `Bearer ${AuthenticationService.getToken()}`,
         "Content-Type": "application/json",
@@ -103,7 +101,7 @@ export default function UserProfile() {
           <div key={field.name} className="form-group">
             <label>{field.name}</label>
             <input
-              type={field.type === "CharField" ? "text" : "text"} // Простая проверка типа
+              type={field.type === "CharField" ? "text" : "text"}
               name={field.name}
               className="form-control"
               value={profile[field.name] || ""}
