@@ -1,98 +1,67 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';  // Чтобы получить ID компании
+import { DataGrid } from '@mui/x-data-grid';
 
-export default function CompanyForm() {
-  const { id } = useParams();  // Получение ID компании для редактирования
-  const [company, setCompany] = useState({ name: '', description: '', address: '', phone: '', website: '' });
-  const [isEditing, setIsEditing] = useState(false);
+export default function CompanyList() {
+  const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
-    if (id) {
-      // Если id есть, значит это редактирование, делаем GET запрос
-      fetch(`http://localhost:8000/api/companies/${id}/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setCompany(data);
-          setIsEditing(true);
-        })
-        .catch((error) => {
-          console.error('Error fetching company:', error);
-        });
-    }
-  }, [id]);
+    // GET запрос для получения списка компаний
+    fetch('http://localhost:8000/api/companies/', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setCompanies(data))
+      .catch((error) => {
+        console.error('Error fetching companies:', error);
+      });
+  }, []);
 
-  const handleChange = (e) => {
-    setCompany({ ...company, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const method = isEditing ? 'PUT' : 'POST';
-    const url = isEditing
-      ? `http://localhost:8000/api/companies/${id}/`
-      : 'http://localhost:8000/api/companies/';
-
-    fetch(url, {
-      method: method,
+  const handleProcessRowUpdate = (newRow) => {
+    // Отправка обновлений на сервер
+    fetch(`http://localhost:8000/api/companies/${newRow.id}/`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-      body: JSON.stringify(company),
+      body: JSON.stringify(newRow),
     })
       .then((response) => response.json())
-      .then(() => {
-        alert(`Company ${isEditing ? 'updated' : 'created'} successfully!`);
+      .then((updatedRow) => {
+        // Обновление состояния с новым значением
+        setCompanies((prev) =>
+          prev.map((company) => (company.id === updatedRow.id ? updatedRow : company))
+        );
       })
       .catch((error) => {
-        console.error('Error:', error);
+        console.error('Error updating company:', error);
       });
+    return newRow;
   };
 
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'name', headerName: 'Name', width: 200, editable: true },
+    { field: 'description', headerName: 'Description', width: 300, editable: true },
+    { field: 'address', headerName: 'Address', width: 200, editable: true },
+    { field: 'phone', headerName: 'Phone', width: 150, editable: true },
+    { field: 'website', headerName: 'Website', width: 200, editable: true },
+  ];
+
   return (
-    <div>
-      <h2>{isEditing ? 'Edit' : 'Create'} Company</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          value={company.name}
-          onChange={handleChange}
-          placeholder="Company Name"
-        />
-        <textarea
-          name="description"
-          value={company.description}
-          onChange={handleChange}
-          placeholder="Description"
-        />
-        <input
-          type="text"
-          name="address"
-          value={company.address}
-          onChange={handleChange}
-          placeholder="Address"
-        />
-        <input
-          type="text"
-          name="phone"
-          value={company.phone}
-          onChange={handleChange}
-          placeholder="Phone"
-        />
-        <input
-          type="url"
-          name="website"
-          value={company.website}
-          onChange={handleChange}
-          placeholder="Website"
-        />
-        <button type="submit">Save</button>
-      </form>
+    <div style={{ height: 400, width: '100%' }}>
+      <h2>Company List</h2>
+      <DataGrid
+        rows={companies}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5, 10, 20]}
+        checkboxSelection
+        processRowUpdate={handleProcessRowUpdate}
+        experimentalFeatures={{ newEditingApi: true }}
+      />
     </div>
   );
 }
